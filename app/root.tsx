@@ -6,8 +6,12 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { useEffect } from "react";
+import { hotjar } from "react-hotjar";
 
 export default function App() {
+  useHotjar();
+
   return (
     <html lang="en">
       <head>
@@ -25,3 +29,13 @@ export default function App() {
     </html>
   );
 }
+
+const useHotjar = (hotjarId?: string, hotjarSv?: string) => {
+  useEffect(() => {
+    if (hotjar.initialized() || !(hotjarId && hotjarSv)) {
+      return;
+    }
+
+    hotjar.initialize(Number(hotjarId), Number(hotjarSv));
+  }, [hotjarId, hotjarSv]);
+};
